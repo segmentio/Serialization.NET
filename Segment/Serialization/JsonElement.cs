@@ -11,7 +11,7 @@ namespace Segment.Serialization
 
         public static implicit operator JsonElement(string value)
         {
-            if (value == null) return JsonNull.instance;
+            if (value == null) return JsonNull.Instance;
             return new JsonLiteral(value, true);
         }
 
@@ -39,7 +39,7 @@ namespace Segment.Serialization
 
         public static implicit operator JsonPrimitive(string value)
         {
-            if (value == null) return JsonNull.instance;
+            if (value == null) return JsonNull.Instance;
             return new JsonLiteral(value, true);
         }
 
@@ -108,7 +108,18 @@ namespace Segment.Serialization
 
         private static JsonNull _instance;
 
-        public static JsonNull instance => _instance ??= new JsonNull();
+        public static JsonNull Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new JsonNull();
+                }
+
+                return _instance;
+            }
+        }
 
         private JsonNull()
         {

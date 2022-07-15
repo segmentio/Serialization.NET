@@ -20,7 +20,7 @@ namespace Segment.Serialization
         {
             if (reader.Value == null)
             {
-                return JsonNull.instance;
+                return JsonNull.Instance;
             }
 
             var str = reader.Value.ToString();
@@ -60,11 +60,18 @@ namespace Segment.Serialization
                 }
 
                 reader.Read();
-                JsonElement value = reader.TokenType switch
+                JsonElement value;
+                switch(reader.TokenType)
                 {
-                    JsonToken.StartObject => serializer.Deserialize<JsonObject>(reader),
-                    JsonToken.StartArray => serializer.Deserialize<JsonArray>(reader),
-                    _ => serializer.Deserialize<JsonPrimitive>(reader)
+                    case JsonToken.StartObject:
+                        value = serializer.Deserialize<JsonObject>(reader);
+                        break;
+                    case JsonToken.StartArray:
+                        value = serializer.Deserialize<JsonArray>(reader);
+                        break;
+                    default:
+                        value = serializer.Deserialize<JsonPrimitive>(reader);
+                        break;
                 };
 
                 result.Add(key, value);
@@ -99,11 +106,18 @@ namespace Segment.Serialization
             reader.Read();
             while (reader.TokenType != JsonToken.EndArray)
             {
-                JsonElement value = reader.TokenType switch
+                JsonElement value;
+                switch(reader.TokenType)
                 {
-                    JsonToken.StartObject => serializer.Deserialize<JsonObject>(reader),
-                    JsonToken.StartArray => serializer.Deserialize<JsonArray>(reader),
-                    _ => serializer.Deserialize<JsonPrimitive>(reader)
+                    case JsonToken.StartObject:
+                           value = serializer.Deserialize<JsonObject>(reader);
+                        break;
+                    case JsonToken.StartArray:
+                        value = serializer.Deserialize<JsonArray>(reader);
+                        break;
+                    default:
+                        value = serializer.Deserialize<JsonPrimitive>(reader);
+                        break;
                 };
 
                 result.Add(value);
