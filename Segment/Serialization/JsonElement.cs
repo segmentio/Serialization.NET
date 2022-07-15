@@ -143,7 +143,7 @@ namespace Segment.Serialization
             content = new Dictionary<string, JsonElement>();
         }
 
-        public JsonObject(IDictionary<string, JsonElement>? content)
+        public JsonObject(IDictionary<string, JsonElement> content)
         {
             this.content = content == null ?
                 new Dictionary<string, JsonElement>() :

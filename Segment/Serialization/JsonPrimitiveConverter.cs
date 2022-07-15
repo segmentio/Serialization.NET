@@ -5,7 +5,7 @@ namespace Segment.Serialization
 {
     public class JsonPrimitiveConverter : JsonConverter<JsonPrimitive>
     {
-        public override void WriteJson(JsonWriter writer, JsonPrimitive? value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, JsonPrimitive value, JsonSerializer serializer)
         {
             if (value == null)
             {
@@ -15,7 +15,7 @@ namespace Segment.Serialization
             writer.WriteRawValue(value.ToString());
         }
 
-        public override JsonPrimitive? ReadJson(JsonReader reader, Type objectType, JsonPrimitive? existingValue, bool hasExistingValue,
+        public override JsonPrimitive ReadJson(JsonReader reader, Type objectType, JsonPrimitive existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
             if (reader.Value == null)
@@ -31,7 +31,7 @@ namespace Segment.Serialization
 
     public class JsonObjectConverter : JsonConverter<JsonObject>
     {
-        public override void WriteJson(JsonWriter writer, JsonObject? value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, JsonObject value, JsonSerializer serializer)
         {
             if (value == null)
             {
@@ -40,7 +40,7 @@ namespace Segment.Serialization
             writer.WriteRawValue(value.ToString());
         }
 
-        public override JsonObject? ReadJson(JsonReader reader, Type objectType, JsonObject? existingValue, bool hasExistingValue,
+        public override JsonObject ReadJson(JsonReader reader, Type objectType, JsonObject existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
             return reader.TokenType == JsonToken.StartObject ? ReadJsonObject(reader, serializer) : null;
@@ -84,7 +84,7 @@ namespace Segment.Serialization
 
     public class JsonArrayConverter : JsonConverter<JsonArray>
     {
-        public override void WriteJson(JsonWriter writer, JsonArray? value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, JsonArray value, JsonSerializer serializer)
         {
             if (value == null)
             {
@@ -93,7 +93,7 @@ namespace Segment.Serialization
             writer.WriteRawValue(value.ToString());
         }
 
-        public override JsonArray? ReadJson(JsonReader reader, Type objectType, JsonArray? existingValue, bool hasExistingValue,
+        public override JsonArray ReadJson(JsonReader reader, Type objectType, JsonArray existingValue, bool hasExistingValue,
             JsonSerializer serializer)
         {
             return reader.TokenType == JsonToken.StartArray ? ReadJsonArray(reader, serializer) : null;
@@ -110,7 +110,7 @@ namespace Segment.Serialization
                 switch(reader.TokenType)
                 {
                     case JsonToken.StartObject:
-                           value = serializer.Deserialize<JsonObject>(reader);
+                        value = serializer.Deserialize<JsonObject>(reader);
                         break;
                     case JsonToken.StartArray:
                         value = serializer.Deserialize<JsonArray>(reader);

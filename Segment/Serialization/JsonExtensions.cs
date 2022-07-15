@@ -165,18 +165,18 @@ namespace Segment.Serialization
             return jsonObject.ContainsKey(key) ? jsonObject[key].ToJsonPrimitive().ToBool() : defaultValue;
         }
 
-        public static string? GetString(this JsonObject jsonObject, string key, string defaultValue = default)
+        public static string GetString(this JsonObject jsonObject, string key, string defaultValue = default)
         {
             return jsonObject.ContainsKey(key) ? jsonObject[key].ToJsonPrimitive().content : defaultValue;
         }
 
-        public static JsonObject? GetJsonObject(this JsonObject jsonObject, string key,
+        public static JsonObject GetJsonObject(this JsonObject jsonObject, string key,
             JsonObject defaultValue = default)
         {
             return jsonObject.ContainsKey(key) ? jsonObject[key].ToJsonObject() : defaultValue;
         }
 
-        public static JsonArray? GetJsonArray(this JsonObject jsonObject, string key,
+        public static JsonArray GetJsonArray(this JsonObject jsonObject, string key,
             JsonArray defaultValue = default)
         {
             return jsonObject.ContainsKey(key) ? jsonObject[key].ToJsonArray() : defaultValue;
