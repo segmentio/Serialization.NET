@@ -58,12 +58,12 @@ namespace Segment.Serialization
 
         public static int ToInt(this JsonPrimitive element)
         {
-            return int.Parse(element.content);
+            return int.Parse(element.Content);
         }
 
         public static int? ToIntOrNull(this JsonPrimitive element)
         {
-            if (int.TryParse(element.content, out var ret))
+            if (int.TryParse(element.Content, out var ret))
             {
                 return ret;
             }
@@ -73,12 +73,12 @@ namespace Segment.Serialization
 
         public static long ToLong(this JsonPrimitive element)
         {
-            return long.Parse(element.content);
+            return long.Parse(element.Content);
         }
 
         public static long? ToLongOrNull(this JsonPrimitive element)
         {
-            if (long.TryParse(element.content, out var ret))
+            if (long.TryParse(element.Content, out var ret))
             {
                 return ret;
             }
@@ -88,12 +88,12 @@ namespace Segment.Serialization
 
         public static double ToDouble(this JsonPrimitive element)
         {
-            return double.Parse(element.content);
+            return double.Parse(element.Content);
         }
 
         public static double? ToDoubleOrNull(this JsonPrimitive element)
         {
-            if (double.TryParse(element.content, out var ret))
+            if (double.TryParse(element.Content, out var ret))
             {
                 return ret;
             }
@@ -103,12 +103,12 @@ namespace Segment.Serialization
 
         public static float ToFloat(this JsonPrimitive element)
         {
-            return float.Parse(element.content);
+            return float.Parse(element.Content);
         }
 
         public static float? ToFloatOrNull(this JsonPrimitive element)
         {
-            if (float.TryParse(element.content, out var ret))
+            if (float.TryParse(element.Content, out var ret))
             {
                 return ret;
             }
@@ -118,12 +118,12 @@ namespace Segment.Serialization
 
         public static bool ToBool(this JsonPrimitive element)
         {
-            return bool.Parse(element.content);
+            return bool.Parse(element.Content);
         }
 
         public static bool? ToBoolOrNull(this JsonPrimitive element)
         {
-            if (bool.TryParse(element.content, out var ret))
+            if (bool.TryParse(element.Content, out var ret))
             {
                 return ret;
             }
@@ -133,7 +133,7 @@ namespace Segment.Serialization
 
         public static string ToContentOrNull(this JsonPrimitive element)
         {
-            return element is JsonNull ? null : element.content;
+            return element is JsonNull ? null : element.Content;
         }
 
         #endregion
@@ -167,7 +167,7 @@ namespace Segment.Serialization
 
         public static string GetString(this JsonObject jsonObject, string key, string defaultValue = default)
         {
-            return jsonObject.ContainsKey(key) ? jsonObject[key].ToJsonPrimitive().content : defaultValue;
+            return jsonObject.ContainsKey(key) ? jsonObject[key].ToJsonPrimitive().Content : defaultValue;
         }
 
         public static JsonObject GetJsonObject(this JsonObject jsonObject, string key,

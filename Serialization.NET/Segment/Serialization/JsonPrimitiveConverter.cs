@@ -25,7 +25,18 @@ namespace Segment.Serialization
 
             var str = reader.Value.ToString();
 
-            return bool.TryParse(str, out var v) ? v : JsonPrimitive.Create(str, !double.TryParse(str, out _));
+            if (reader.Value is bool)
+            {
+                bool.TryParse(str, out var result);
+                return result;
+            }
+
+            if (reader.Value is string)
+            {
+                return JsonPrimitive.Create(str, true);    
+            }
+            
+            return JsonPrimitive.Create(str, false); 
         }
     }
 
