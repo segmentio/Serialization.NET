@@ -21,4 +21,4 @@ jobs:
         with:
           args: |
             --file=Serialization.NET.sln
-            --fail-on=upgradable
+            --fail-on=patchable

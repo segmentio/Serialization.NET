@@ -83,8 +83,8 @@ namespace Segment.Serialization
             }
         }
 
-        public static string ToJson(object value) => JsonConvert.SerializeObject(value);
+        public static string ToJson(object value, bool pretty = false) => JsonConvert.SerializeObject(value, pretty ? Formatting.Indented : Formatting.None);
 
-        public static T FromJson<T>(string json) => JsonConvert.DeserializeObject<T>(json);
+        public static T FromJson<T>(string json) => JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings {DateParseHandling = DateParseHandling.None});
     }
 }
