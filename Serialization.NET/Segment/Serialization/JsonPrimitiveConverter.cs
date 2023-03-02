@@ -1,11 +1,12 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Segment.Serialization
 {
     public class JsonPrimitiveConverter : JsonConverter<JsonPrimitive>
     {
-        public override void WriteJson(JsonWriter writer, JsonPrimitive value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, JsonPrimitive value, JsonSerializerOptions options)
         {
             if (value == null)
             {
@@ -15,34 +16,27 @@ namespace Segment.Serialization
             writer.WriteRawValue(value.ToString());
         }
 
-        public override JsonPrimitive ReadJson(JsonReader reader, Type objectType, JsonPrimitive existingValue, bool hasExistingValue,
-            JsonSerializer serializer)
+        public override JsonPrimitive Read(ref Utf8JsonReader reader, Type objectType, JsonSerializerOptions options)
         {
-            if (reader.Value == null)
+            switch (reader.TokenType)
             {
-                return JsonNull.Instance;
+                case JsonTokenType.Null:
+                    return JsonNull.Instance;
+                case JsonTokenType.True:
+                    return true;
+                case JsonTokenType.False:
+                    return false;
+                case JsonTokenType.String:
+                    return JsonPrimitive.Create(reader.GetString(), true);
+                default:
+                    return JsonPrimitive.Create(reader.GetDouble(), false);
             }
-
-            var str = reader.Value.ToString();
-
-            if (reader.Value is bool)
-            {
-                bool.TryParse(str, out var result);
-                return result;
-            }
-
-            if (reader.Value is string)
-            {
-                return JsonPrimitive.Create(str, true);    
-            }
-            
-            return JsonPrimitive.Create(str, false); 
         }
     }
 
     public class JsonObjectConverter : JsonConverter<JsonObject>
     {
-        public override void WriteJson(JsonWriter writer, JsonObject value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, JsonObject value, JsonSerializerOptions options)
         {
             if (value == null)
             {
@@ -51,42 +45,39 @@ namespace Segment.Serialization
             writer.WriteRawValue(value.ToString());
         }
 
-        public override JsonObject ReadJson(JsonReader reader, Type objectType, JsonObject existingValue, bool hasExistingValue,
-            JsonSerializer serializer)
+        public override JsonObject Read(ref Utf8JsonReader reader, Type objectType, JsonSerializerOptions options)
         {
-            return reader.TokenType == JsonToken.StartObject ? ReadJsonObject(reader, serializer) : null;
+            return reader.TokenType == JsonTokenType.StartObject ? ReadObject(ref reader, options) : null;
         }
 
-        private JsonObject ReadJsonObject(JsonReader reader, JsonSerializer serializer)
+        private JsonObject ReadObject(ref Utf8JsonReader reader, JsonSerializerOptions options)
         {
             var result = new JsonObject();
 
-            reader.Read();
-            while (reader.TokenType != JsonToken.EndObject)
+            while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
             {
-                var key = reader.Value?.ToString();
-                if (key == null || reader.TokenType != JsonToken.PropertyName)
+                var key = reader.GetString();
+                if (key == null || reader.TokenType != JsonTokenType.PropertyName)
                 {
-                    throw new JsonSerializationException("Unexpected token!");
+                    throw new JsonException("Unexpected token!");
                 }
 
                 reader.Read();
                 JsonElement value;
                 switch(reader.TokenType)
                 {
-                    case JsonToken.StartObject:
-                        value = serializer.Deserialize<JsonObject>(reader);
+                    case JsonTokenType.StartObject:
+                        value = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
                         break;
-                    case JsonToken.StartArray:
-                        value = serializer.Deserialize<JsonArray>(reader);
+                    case JsonTokenType.StartArray:
+                        value = JsonSerializer.Deserialize<JsonArray>(ref reader, options);
                         break;
                     default:
-                        value = serializer.Deserialize<JsonPrimitive>(reader);
+                        value = JsonSerializer.Deserialize<JsonPrimitive>(ref reader, options);
                         break;
                 };
 
                 result.Add(key, value);
-                reader.Read();
             }
 
             return result;
@@ -95,7 +86,7 @@ namespace Segment.Serialization
 
     public class JsonArrayConverter : JsonConverter<JsonArray>
     {
-        public override void WriteJson(JsonWriter writer, JsonArray value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, JsonArray value, JsonSerializerOptions options)
         {
             if (value == null)
             {
@@ -104,35 +95,33 @@ namespace Segment.Serialization
             writer.WriteRawValue(value.ToString());
         }
 
-        public override JsonArray ReadJson(JsonReader reader, Type objectType, JsonArray existingValue, bool hasExistingValue,
-            JsonSerializer serializer)
+        public override JsonArray Read(ref Utf8JsonReader reader, Type objectType, JsonSerializerOptions options)
         {
-            return reader.TokenType == JsonToken.StartArray ? ReadJsonArray(reader, serializer) : null;
+            return reader.TokenType == JsonTokenType.StartArray ? ReadArray(ref reader, options) : null;
         }
 
-        private JsonArray ReadJsonArray(JsonReader reader, JsonSerializer serializer)
+        private JsonArray ReadArray(ref Utf8JsonReader reader, JsonSerializerOptions options)
         {
             var result = new JsonArray();
 
-            reader.Read();
-            while (reader.TokenType != JsonToken.EndArray)
+            
+            while (reader.Read() && reader.TokenType != JsonTokenType.EndArray)
             {
                 JsonElement value;
                 switch(reader.TokenType)
                 {
-                    case JsonToken.StartObject:
-                        value = serializer.Deserialize<JsonObject>(reader);
+                    case JsonTokenType.StartObject:
+                        value = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
                         break;
-                    case JsonToken.StartArray:
-                        value = serializer.Deserialize<JsonArray>(reader);
+                    case JsonTokenType.StartArray:
+                        value = JsonSerializer.Deserialize<JsonArray>(ref reader, options);
                         break;
                     default:
-                        value = serializer.Deserialize<JsonPrimitive>(reader);
+                        value = JsonSerializer.Deserialize<JsonPrimitive>(ref reader, options);
                         break;
                 };
 
                 result.Add(value);
-                reader.Read();
             }
 
             return result;
