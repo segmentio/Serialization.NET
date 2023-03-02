@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
+using System.Xml;
 
 namespace Segment.Serialization
 {
@@ -83,7 +84,7 @@ namespace Segment.Serialization
             }
         }
 
-        public static string ToJson(object value) => JsonSerializer.Serialize(value);
+        public static string ToJson(object value, bool pretty = false) => JsonSerializer.Serialize(value, pretty ? new JsonSerializerOptions {  WriteIndented = true } : null);
 
         public static T FromJson<T>(string json) => JsonSerializer.Deserialize<T>(json);
     }
