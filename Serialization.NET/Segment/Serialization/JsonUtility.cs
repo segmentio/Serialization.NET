@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Text.Json;
-using System.Xml;
 
 namespace Segment.Serialization
 {
