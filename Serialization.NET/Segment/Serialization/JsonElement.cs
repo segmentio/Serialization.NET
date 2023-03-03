@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Segment.Serialization
@@ -68,8 +67,8 @@ namespace Segment.Serialization
 
         internal JsonLiteral(object body, bool isString)
         {
-            this.IsString = isString;
-            this.Content = body.ToString();
+            IsString = isString;
+            Content = body.ToString();
         }
 
         public override string ToString()
@@ -84,7 +83,7 @@ namespace Segment.Serialization
                 return true;
             }
 
-            if (other == null || this.GetType() != other.GetType())
+            if (other == null || GetType() != other.GetType())
             {
                 return false;
             }
@@ -95,7 +94,7 @@ namespace Segment.Serialization
 
         public override int GetHashCode()
         {
-            var result = IsString.GetHashCode();
+            int result = IsString.GetHashCode();
             // 31 is an arbitrary number and shouldn't be changed.
             result = 31 * result + Content.GetHashCode();
             return result;
@@ -107,18 +106,18 @@ namespace Segment.Serialization
         public override bool IsString => false;
         public override string Content => "null";
 
-        private static JsonNull _instance;
+        private static JsonNull s_instance;
 
         public static JsonNull Instance
         {
             get
             {
-                if (_instance == null)
+                if (s_instance == null)
                 {
-                    _instance = new JsonNull();
+                    s_instance = new JsonNull();
                 }
 
-                return _instance;
+                return s_instance;
             }
         }
 
@@ -146,14 +145,14 @@ namespace Segment.Serialization
 
         public JsonObject(IDictionary<string, JsonElement> content)
         {
-            this.Content = content == null ?
+            Content = content == null ?
                 new Dictionary<string, JsonElement>() :
                 new Dictionary<string, JsonElement>(content);
         }
 
         public override string ToString()
         {
-            var entries = Content.Select(d =>
+            IEnumerable<string> entries = Content.Select(d =>
                 $"{JsonUtility.PrintQuoted(d.Key)}: {d.Value}");
             return "{" + string.Join(",", entries) + "}";
         }
@@ -202,7 +201,7 @@ namespace Segment.Serialization
 
         public JsonArray(IList<JsonElement> content)
         {
-            this.Content = content;
+            Content = content;
         }
 
         public IEnumerator<JsonElement> GetEnumerator() => Content.GetEnumerator();

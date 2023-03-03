@@ -56,7 +56,7 @@ namespace Segment.Serialization
 
             while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
             {
-                var key = reader.GetString();
+                string key = reader.GetString();
                 if (key == null || reader.TokenType != JsonTokenType.PropertyName)
                 {
                     throw new JsonException("Unexpected token!");
@@ -64,7 +64,7 @@ namespace Segment.Serialization
 
                 reader.Read();
                 JsonElement value;
-                switch(reader.TokenType)
+                switch (reader.TokenType)
                 {
                     case JsonTokenType.StartObject:
                         value = JsonSerializer.Deserialize<JsonObject>(ref reader, options);
@@ -104,11 +104,11 @@ namespace Segment.Serialization
         {
             var result = new JsonArray();
 
-            
+
             while (reader.Read() && reader.TokenType != JsonTokenType.EndArray)
             {
                 JsonElement value;
-                switch(reader.TokenType)
+                switch (reader.TokenType)
                 {
                     case JsonTokenType.StartObject:
                         value = JsonSerializer.Deserialize<JsonObject>(ref reader, options);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace Segment.Serialization
 {
@@ -63,7 +62,7 @@ namespace Segment.Serialization
 
         public static int? ToIntOrNull(this JsonPrimitive element)
         {
-            if (int.TryParse(element.Content, out var ret))
+            if (int.TryParse(element.Content, out int ret))
             {
                 return ret;
             }
@@ -78,7 +77,7 @@ namespace Segment.Serialization
 
         public static long? ToLongOrNull(this JsonPrimitive element)
         {
-            if (long.TryParse(element.Content, out var ret))
+            if (long.TryParse(element.Content, out long ret))
             {
                 return ret;
             }
@@ -93,7 +92,7 @@ namespace Segment.Serialization
 
         public static double? ToDoubleOrNull(this JsonPrimitive element)
         {
-            if (double.TryParse(element.Content, out var ret))
+            if (double.TryParse(element.Content, out double ret))
             {
                 return ret;
             }
@@ -108,7 +107,7 @@ namespace Segment.Serialization
 
         public static float? ToFloatOrNull(this JsonPrimitive element)
         {
-            if (float.TryParse(element.Content, out var ret))
+            if (float.TryParse(element.Content, out float ret))
             {
                 return ret;
             }
@@ -123,7 +122,7 @@ namespace Segment.Serialization
 
         public static bool? ToBoolOrNull(this JsonPrimitive element)
         {
-            if (bool.TryParse(element.Content, out var ret))
+            if (bool.TryParse(element.Content, out bool ret))
             {
                 return ret;
             }
