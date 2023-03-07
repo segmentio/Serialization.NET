@@ -83,7 +83,16 @@ namespace Segment.Serialization
             }
         }
 
-        public static string ToJson(object value, bool pretty = false) => JsonSerializer.Serialize(value, pretty ? new JsonSerializerOptions { WriteIndented = true } : null);
+        public static string ToJson(object value, bool pretty = false)
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = pretty
+            };
+
+            return JsonSerializer.Serialize(value, options);
+        }
 
         public static T FromJson<T>(string json) => JsonSerializer.Deserialize<T>(json);
     }
