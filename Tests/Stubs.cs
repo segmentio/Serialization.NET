@@ -1,3 +1,5 @@
+using Segment.Serialization;
+
 namespace Tests
 {
     class Foo
@@ -20,5 +22,12 @@ namespace Tests
         private readonly string privateFieldBar = "privateFieldBar";
 
         public override string ToString() => "{\"propertyBar\":\"PropertyBar\",\"propertyFoo\":\"PropertyFoo\"}";
+    }
+
+    public struct Settings
+    {
+        public JsonObject Integrations { get; set; }
+        public JsonObject Plan { get; set; }
+        public JsonObject EdgeFunctions { get; set; }
     }
 }

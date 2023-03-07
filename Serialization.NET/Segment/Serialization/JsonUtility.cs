@@ -94,6 +94,14 @@ namespace Segment.Serialization
             return JsonSerializer.Serialize(value, options);
         }
 
-        public static T FromJson<T>(string json) => JsonSerializer.Deserialize<T>(json);
+        public static T FromJson<T>(string json)
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            return JsonSerializer.Deserialize<T>(json, options);
+        }
     }
 }

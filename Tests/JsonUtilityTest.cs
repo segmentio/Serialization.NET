@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Segment.Serialization;
 using Xunit;
 
@@ -79,6 +80,19 @@ namespace Tests
             var actual = new Foo();
             Foo expected = JsonUtility.FromJson<Foo>(actual.ToString());
             Assert.Equal(expected.ToString(), actual.ToString());
+        }
+
+        [Fact]
+        public void Test_FromJson_Nested_Objects()
+        {
+            string settingsStr =
+                "{\"integrations\":{\"Segment.io\":{\"apiKey\":\"qwerty\"}},\"plan\":{},\"edgeFunctions\":{}}";
+            Settings settings = JsonUtility.FromJson<Settings>(settingsStr);
+            Assert.NotNull(settings.Integrations);
+            Assert.NotNull(settings.Integrations["Segment.io"]);
+            Assert.Equal("qwerty", settings.Integrations.GetJsonObject("Segment.io").GetString("apiKey"));
+            Assert.Equal(new JsonObject(), settings.Plan);
+            Assert.Equal(new JsonObject(), settings.EdgeFunctions);
         }
     }
 }
