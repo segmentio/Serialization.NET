@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Segment.Serialization;
 using Xunit;
 
@@ -44,6 +45,54 @@ namespace Tests
         {
             JsonObject actual = JsonUtility.FromJson<JsonObject>(_jsonStr);
             Assert.Equal(_jsonObject.ToString(), actual.ToString());
+        }
+
+        [Fact]
+        public void Test_ToJson_Camel_Case()
+        {
+            var foo = new Foo();
+            string actual = JsonUtility.ToJson(foo);
+            Assert.Equal(foo.ToString(), actual);
+        }
+
+        [Fact]
+        public void Test_ToJson_Polymorphic()
+        {
+            var bar = new Bar();
+            Foo foo = bar;
+            string actual = JsonUtility.ToJson(foo);
+            Assert.Equal(bar.ToString(), actual);
+        }
+
+        [Fact]
+        public void Test_ToJson_Only_Property()
+        {
+            var foo = new Foo();
+            string actual = JsonUtility.ToJson(foo);
+            Assert.Contains(foo.PropertyFoo, actual);
+            Assert.DoesNotContain(foo.PublicFieldFoo, actual);
+            Assert.DoesNotContain("privateFieldFoo", actual);
+        }
+
+        [Fact]
+        public void Test_FromJson_T()
+        {
+            var actual = new Foo();
+            Foo expected = JsonUtility.FromJson<Foo>(actual.ToString());
+            Assert.Equal(expected.ToString(), actual.ToString());
+        }
+
+        [Fact]
+        public void Test_FromJson_Nested_Objects()
+        {
+            string settingsStr =
+                "{\"integrations\":{\"Segment.io\":{\"apiKey\":\"qwerty\"}},\"plan\":{},\"edgeFunctions\":{}}";
+            Settings settings = JsonUtility.FromJson<Settings>(settingsStr);
+            Assert.NotNull(settings.Integrations);
+            Assert.NotNull(settings.Integrations["Segment.io"]);
+            Assert.Equal("qwerty", settings.Integrations.GetJsonObject("Segment.io").GetString("apiKey"));
+            Assert.Equal(new JsonObject(), settings.Plan);
+            Assert.Equal(new JsonObject(), settings.EdgeFunctions);
         }
     }
 }
