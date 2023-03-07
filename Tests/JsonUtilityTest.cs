@@ -45,5 +45,40 @@ namespace Tests
             JsonObject actual = JsonUtility.FromJson<JsonObject>(_jsonStr);
             Assert.Equal(_jsonObject.ToString(), actual.ToString());
         }
+
+        [Fact]
+        public void Test_ToJson_Camel_Case()
+        {
+            var foo = new Foo();
+            string actual = JsonUtility.ToJson(foo);
+            Assert.Equal(foo.ToString(), actual);
+        }
+
+        [Fact]
+        public void Test_ToJson_Polymorphic()
+        {
+            var bar = new Bar();
+            Foo foo = bar;
+            string actual = JsonUtility.ToJson(foo);
+            Assert.Equal(bar.ToString(), actual);
+        }
+
+        [Fact]
+        public void Test_ToJson_Only_Property()
+        {
+            var foo = new Foo();
+            string actual = JsonUtility.ToJson(foo);
+            Assert.Contains(foo.PropertyFoo, actual);
+            Assert.DoesNotContain(foo.PublicFieldFoo, actual);
+            Assert.DoesNotContain("privateFieldFoo", actual);
+        }
+
+        [Fact]
+        public void Test_FromJson_T()
+        {
+            var actual = new Foo();
+            Foo expected = JsonUtility.FromJson<Foo>(actual.ToString());
+            Assert.Equal(expected.ToString(), actual.ToString());
+        }
     }
 }
