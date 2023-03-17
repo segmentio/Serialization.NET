@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Segment.Serialization
 {
@@ -83,25 +83,8 @@ namespace Segment.Serialization
             }
         }
 
-        public static string ToJson(object value, bool pretty = false)
-        {
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = pretty
-            };
+        public static string ToJson(object value, bool pretty = false) => JsonConvert.SerializeObject(value, pretty ? Formatting.Indented : Formatting.None);
 
-            return JsonSerializer.Serialize(value, options);
-        }
-
-        public static T FromJson<T>(string json)
-        {
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            };
-
-            return JsonSerializer.Deserialize<T>(json, options);
-        }
+        public static T FromJson<T>(string json) => JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
     }
 }
