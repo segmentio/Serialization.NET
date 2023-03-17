@@ -8,7 +8,7 @@
     <PackageOutputPath>./nupkg</PackageOutputPath>
 
     <Authors>Segment, Inc</Authors>
-    <Description>Build JsonObject at ease, serializable with System.Text.Json</Description>
+    <Description>Build JsonObject at ease, serializable with Newtonsoft.Json</Description>
     <Version>1.1.1</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/segmentio/Serialization.NET</RepositoryUrl>
@@ -22,14 +22,14 @@
   <ItemGroup>
     <None Remove="Segment\" />
     <None Remove="Segment\Serialization\" />
-    <None Remove="System.Text.Json" />
+    <None Remove="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Segment\" />
     <Folder Include="Segment\Serialization\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="7.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

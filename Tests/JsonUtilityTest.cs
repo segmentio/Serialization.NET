@@ -70,7 +70,8 @@ namespace Tests
             var foo = new Foo();
             string actual = JsonUtility.ToJson(foo);
             Assert.Contains(foo.PropertyFoo, actual);
-            Assert.DoesNotContain(foo.PublicFieldFoo, actual);
+            // Newtonsoft includes public fields whereas system.text.json doesn't
+            //Assert.DoesNotContain(foo.PublicFieldFoo, actual);
             Assert.DoesNotContain("privateFieldFoo", actual);
         }
 

@@ -10,7 +10,7 @@ namespace Tests
 
         private readonly string privateFieldFoo = "privateFieldFoo";
 
-        public override string ToString() => "{\"propertyFoo\":\"PropertyFoo\"}";
+        public override string ToString() => "{\"publicFieldFoo\":\"PublicFieldFoo\",\"propertyFoo\":\"PropertyFoo\"}";
     }
 
     class Bar : Foo
@@ -21,7 +21,7 @@ namespace Tests
 
         private readonly string privateFieldBar = "privateFieldBar";
 
-        public override string ToString() => "{\"propertyBar\":\"PropertyBar\",\"propertyFoo\":\"PropertyFoo\"}";
+        public override string ToString() => "{\"publicFieldBar\":\"PublicFieldBar\",\"publicFieldFoo\":\"PublicFieldFoo\",\"propertyBar\":\"PropertyBar\",\"propertyFoo\":\"PropertyFoo\"}";
     }
 
     public struct Settings
