@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Segment.Serialization
 {
@@ -83,8 +84,32 @@ namespace Segment.Serialization
             }
         }
 
-        public static string ToJson(object value, bool pretty = false) => JsonConvert.SerializeObject(value, pretty ? Formatting.Indented : Formatting.None);
+        public static string ToJson(object value, bool pretty = false)
+        {
+            DefaultContractResolver contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
 
-        public static T FromJson<T>(string json) => JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            return JsonConvert.SerializeObject(value, pretty ? Formatting.Indented : Formatting.None, new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+                DateParseHandling = DateParseHandling.None
+            });
+        }
+
+        public static T FromJson<T>(string json)
+        {
+            DefaultContractResolver contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            return JsonConvert.DeserializeObject<T>(json, new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver,
+                DateParseHandling = DateParseHandling.None
+            });
+        }
     }
 }
