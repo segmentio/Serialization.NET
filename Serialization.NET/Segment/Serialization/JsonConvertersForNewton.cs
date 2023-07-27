@@ -1,4 +1,6 @@
-﻿using System;
+#if NETSTANDARD1_3
+
+using System;
 using Newtonsoft.Json;
 
 namespace Segment.Serialization
@@ -134,3 +136,5 @@ namespace Segment.Serialization
         }
     }
 }
+
+#endif
