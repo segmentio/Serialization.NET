@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+using Newtonsoft.Json.Linq;
 using Segment.Serialization;
 using Xunit;
 
@@ -52,7 +52,7 @@ namespace Tests
         {
             var foo = new Foo();
             string actual = JsonUtility.ToJson(foo);
-            Assert.Equal(foo.ToString(), actual);
+            Assert.True(JsonEquals(foo.ToString(), actual));
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace Tests
             var bar = new Bar();
             Foo foo = bar;
             string actual = JsonUtility.ToJson(foo);
-            Assert.Equal(bar.ToString(), actual);
+            Assert.True(JsonEquals(bar.ToString(), actual));
         }
 
         [Fact]
@@ -70,8 +70,6 @@ namespace Tests
             var foo = new Foo();
             string actual = JsonUtility.ToJson(foo);
             Assert.Contains(foo.PropertyFoo, actual);
-            // Newtonsoft includes public fields whereas system.text.json doesn't
-            //Assert.DoesNotContain(foo.PublicFieldFoo, actual);
             Assert.DoesNotContain("privateFieldFoo", actual);
         }
 
@@ -94,6 +92,14 @@ namespace Tests
             Assert.Equal("qwerty", settings.Integrations.GetJsonObject("Segment.io").GetString("apiKey"));
             Assert.Equal(new JsonObject(), settings.Plan);
             Assert.Equal(new JsonObject(), settings.EdgeFunctions);
+        }
+
+        private bool JsonEquals(string expect, string actual)
+        {
+            var jsonExpect = JObject.Parse(expect);
+            var jsonActual = JObject.Parse(actual);
+
+            return JToken.DeepEquals(jsonExpect, jsonActual);
         }
     }
 }
