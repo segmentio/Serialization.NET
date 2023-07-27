@@ -1,6 +1,12 @@
 ﻿using System.Text;
+
+#if NETSTANDARD2_0
+using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
+#else
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+#endif
 
 namespace Segment.Serialization
 {
@@ -86,6 +92,19 @@ namespace Segment.Serialization
 
         public static string ToJson(object value, bool pretty = false)
         {
+#if NETSTANDARD2_0
+            var options = new JsonSerializerOptions
+            {
+                TypeInfoResolver = new DefaultJsonTypeInfoResolver
+                {
+                    Modifiers = { JsonContract.AddPublicFieldsModifier }
+                },
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                WriteIndented = pretty
+            };
+
+            return JsonSerializer.Serialize(value, options);
+#else
             DefaultContractResolver contractResolver = new DefaultContractResolver
             {
                 NamingStrategy = new CamelCaseNamingStrategy()
@@ -96,10 +115,19 @@ namespace Segment.Serialization
                 ContractResolver = contractResolver,
                 DateParseHandling = DateParseHandling.None
             });
+#endif
         }
 
         public static T FromJson<T>(string json)
         {
+#if NETSTANDARD2_0
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            return JsonSerializer.Deserialize<T>(json, options);
+#else
             DefaultContractResolver contractResolver = new DefaultContractResolver
             {
                 NamingStrategy = new CamelCaseNamingStrategy()
@@ -110,6 +138,7 @@ namespace Segment.Serialization
                 ContractResolver = contractResolver,
                 DateParseHandling = DateParseHandling.None
             });
+#endif
         }
     }
 }
