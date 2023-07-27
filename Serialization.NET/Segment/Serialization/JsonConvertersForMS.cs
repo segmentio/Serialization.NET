@@ -131,6 +131,24 @@ namespace Segment.Serialization
             return result;
         }
     }
+
+    public static class JsonContract
+    {
+        internal static void AddPublicFieldsModifier(JsonTypeInfo jsonTypeInfo)
+        {
+            if (jsonTypeInfo.Kind != JsonTypeInfoKind.Object)
+                return;
+
+            foreach (FieldInfo field in jsonTypeInfo.Type.GetFields(BindingFlags.Instance | BindingFlags.Public))
+            {
+                JsonPropertyInfo jsonPropertyInfo = jsonTypeInfo.CreateJsonPropertyInfo(field.FieldType, JsonNamingPolicy.CamelCase.ConvertName(field.Name));
+                jsonPropertyInfo.Get = field.GetValue;
+                jsonPropertyInfo.Set = field.SetValue;
+
+                jsonTypeInfo.Properties.Add(jsonPropertyInfo);
+            }
+        }
+    }
 }
 
 #endif
