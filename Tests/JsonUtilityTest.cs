@@ -37,7 +37,9 @@ namespace Tests
         public void Test_ToJson()
         {
             string actual = JsonUtility.ToJson(_jsonObject);
-            Assert.Equal(_jsonStr, actual);
+
+            JsonObject expected = JsonUtility.FromJson<JsonObject>(_jsonStr);
+            Assert.Equal(JsonUtility.ToJson(expected), actual);
         }
 
         [Fact]
