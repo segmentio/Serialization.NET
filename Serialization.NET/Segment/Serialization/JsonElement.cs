@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -145,14 +146,14 @@ namespace Segment.Serialization
 
         public JsonObject()
         {
-            Content = new Dictionary<string, JsonElement>();
+            Content = new ConcurrentDictionary<string, JsonElement>();
         }
 
         public JsonObject(IDictionary<string, JsonElement> content)
         {
             Content = content == null ?
-                new Dictionary<string, JsonElement>() :
-                new Dictionary<string, JsonElement>(content);
+                new ConcurrentDictionary<string, JsonElement>() :
+                new ConcurrentDictionary<string, JsonElement>(content);
         }
 
         public override string ToString()
@@ -201,12 +202,12 @@ namespace Segment.Serialization
 
         public JsonArray()
         {
-            Content = new List<JsonElement>();
+            Content = new ConcurrentList<JsonElement>();
         }
 
         public JsonArray(IList<JsonElement> content)
         {
-            Content = content;
+            Content = new ConcurrentList<JsonElement>(content);
         }
 
         public IEnumerator<JsonElement> GetEnumerator() => Content.GetEnumerator();
