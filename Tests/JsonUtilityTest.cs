@@ -17,6 +17,7 @@ namespace Tests
             ["bool"] = true,
             ["datetime"] = "2015-12-10T04:08:31.905Z",
             ["date"] = s_date,
+            ["null"] = null,
             ["object"] = new JsonObject
             {
                 ["another object"] = "obj"
@@ -31,7 +32,7 @@ namespace Tests
         };
 
         private readonly string _jsonStr =
-            "{\"int\": 1,\"float\": 1,\"long\": 1,\"double\": 1,\"string\": \"1\",\"bool\": true,\"datetime\": \"2015-12-10T04:08:31.905Z\",\"date\": \"" + s_date + "\",\"object\": {\"another object\": \"obj\"},\"array\": [1,1,1,1,\"1\",true,{\"object in array\": \"obj\"}]}";
+            "{\"int\": 1,\"float\": 1,\"long\": 1,\"double\": 1,\"string\": \"1\",\"bool\": true,\"datetime\": \"2015-12-10T04:08:31.905Z\",\"date\": \"" + s_date + "\",\"null\": null,\"object\": {\"another object\": \"obj\"},\"array\": [1,1,1,1,\"1\",true,{\"object in array\": \"obj\"}]}";
 
         [Fact]
         public void Test_ToJson()
