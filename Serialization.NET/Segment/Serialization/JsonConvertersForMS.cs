@@ -76,6 +76,9 @@ namespace Segment.Serialization
                     case JsonTokenType.StartArray:
                         value = JsonSerializer.Deserialize<JsonArray>(ref reader, options);
                         break;
+                    case JsonTokenType.Null:
+                        value = JsonNull.Instance;
+                        break;
                     default:
                         value = JsonSerializer.Deserialize<JsonPrimitive>(ref reader, options);
                         break;
@@ -119,6 +122,9 @@ namespace Segment.Serialization
                         break;
                     case JsonTokenType.StartArray:
                         value = JsonSerializer.Deserialize<JsonArray>(ref reader, options);
+                        break;
+                    case JsonTokenType.Null:
+                        value = JsonNull.Instance;
                         break;
                     default:
                         value = JsonSerializer.Deserialize<JsonPrimitive>(ref reader, options);

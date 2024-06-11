@@ -187,7 +187,7 @@ namespace Segment.Serialization
         public JsonElement this[string key]
         {
             get => Content[key];
-            set => Content[key] = value;
+            set => Content[key] = value ?? JsonNull.Instance;
         }
     }
 
@@ -240,7 +240,7 @@ namespace Segment.Serialization
         public JsonElement this[int index]
         {
             get => Content[index];
-            set => Content[index] = value;
+            set => Content[index] = value ?? JsonNull.Instance;
         }
     }
 
