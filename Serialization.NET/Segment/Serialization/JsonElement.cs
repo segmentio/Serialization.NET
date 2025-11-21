@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 #if NETSTANDARD2_0
 using System.Text.Json.Serialization;
@@ -158,8 +159,14 @@ namespace Segment.Serialization
 
         public override string ToString()
         {
+            StringBuilder sb = new StringBuilder();
             IEnumerable<string> entries = Content.Select(d =>
-                $"{JsonUtility.PrintQuoted(d.Key)}: {d.Value}");
+            {
+                sb.Clear();
+                sb.Append(JsonUtility.PrintQuoted(d.Key)).Append(": ");
+                sb.Append(d.Value == null ? "null" : d.Value.ToString());
+                return sb.ToString();
+            });
             return "{" + string.Join(",", entries) + "}";
         }
 
