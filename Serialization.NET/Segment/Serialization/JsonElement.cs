@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 #if NETSTANDARD2_0
@@ -61,6 +62,19 @@ namespace Segment.Serialization
 
         public static JsonPrimitive Create(object value, bool isString)
         {
+            if (value is string s)
+            {
+                if (float.TryParse(s, out var f))
+                {
+                    return new JsonLiteral(f, isString);
+                }
+
+                if (double.TryParse(s, out var d))
+                {
+                    return new JsonLiteral(d, isString);
+                }
+            }
+
             return new JsonLiteral(value, isString);
         }
     }
@@ -74,7 +88,19 @@ namespace Segment.Serialization
         internal JsonLiteral(object body, bool isString)
         {
             IsString = isString;
-            Content = body.ToString();
+
+            switch (body)
+            {
+                case float f:
+                    Content = f.ToString(CultureInfo.InvariantCulture);
+                    break;
+                case double d:
+                    Content = d.ToString(CultureInfo.InvariantCulture);
+                    break;
+                default:
+                    Content = body.ToString();
+                    break;
+            }
         }
 
         public override string ToString()
