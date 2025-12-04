@@ -11,6 +11,7 @@ namespace Segment.Serialization
         {
             if (value == null)
             {
+                writer.WriteNull();
                 return;
             }
 
@@ -48,6 +49,7 @@ namespace Segment.Serialization
         {
             if (value == null)
             {
+                writer.WriteNull();
                 return;
             }
             writer.WriteRawValue(value.ToString());
@@ -98,6 +100,7 @@ namespace Segment.Serialization
         {
             if (value == null)
             {
+                writer.WriteNull();
                 return;
             }
             writer.WriteRawValue(value.ToString());

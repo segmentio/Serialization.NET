@@ -123,6 +123,10 @@ namespace Segment.Serialization
 #if NETSTANDARD2_0
             var options = new JsonSerializerOptions
             {
+                TypeInfoResolver = new DefaultJsonTypeInfoResolver
+                {
+                    Modifiers = { JsonContract.AddPublicFieldsModifier }
+                },
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 

@@ -31,6 +31,18 @@ namespace Segment.Serialization
         public static implicit operator JsonElement(double value) => new JsonLiteral(value, false);
 
         public static implicit operator JsonElement(float value) => new JsonLiteral(value, false);
+
+        public static implicit operator JsonElement(bool? value) => value.HasValue ? new JsonLiteral(value.Value.ToString().ToLower(), false) : (JsonElement)JsonNull.Instance;
+
+        public static implicit operator JsonElement(int? value) => value.HasValue ? new JsonLiteral(value.Value, false) : (JsonElement)JsonNull.Instance;
+
+        public static implicit operator JsonElement(long? value) => value.HasValue ? new JsonLiteral(value.Value, false) : (JsonElement)JsonNull.Instance;
+
+        public static implicit operator JsonElement(short? value) => value.HasValue ? new JsonLiteral(value.Value, false) : (JsonElement)JsonNull.Instance;
+
+        public static implicit operator JsonElement(double? value) => value.HasValue ? new JsonLiteral(value.Value, false) : (JsonElement)JsonNull.Instance;
+
+        public static implicit operator JsonElement(float? value) => value.HasValue ? new JsonLiteral(value.Value, false) : (JsonElement)JsonNull.Instance;
     }
 
     [JsonConverter(typeof(JsonPrimitiveConverter))]
@@ -59,6 +71,18 @@ namespace Segment.Serialization
         public static implicit operator JsonPrimitive(double value) => new JsonLiteral(value, false);
 
         public static implicit operator JsonPrimitive(float value) => new JsonLiteral(value, false);
+
+        public static implicit operator JsonPrimitive(bool? value) => value.HasValue ? new JsonLiteral(value.Value.ToString().ToLower(), false) : (JsonPrimitive)JsonNull.Instance;
+
+        public static implicit operator JsonPrimitive(int? value) => value.HasValue ? new JsonLiteral(value.Value, false) : (JsonPrimitive)JsonNull.Instance;
+
+        public static implicit operator JsonPrimitive(long? value) => value.HasValue ? new JsonLiteral(value.Value, false) : (JsonPrimitive)JsonNull.Instance;
+
+        public static implicit operator JsonPrimitive(short? value) => value.HasValue ? new JsonLiteral(value.Value, false) : (JsonPrimitive)JsonNull.Instance;
+
+        public static implicit operator JsonPrimitive(double? value) => value.HasValue ? new JsonLiteral(value.Value, false) : (JsonPrimitive)JsonNull.Instance;
+
+        public static implicit operator JsonPrimitive(float? value) => value.HasValue ? new JsonLiteral(value.Value, false) : (JsonPrimitive)JsonNull.Instance;
 
         public static JsonPrimitive Create(object value, bool isString)
         {
