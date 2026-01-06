@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using Segment.Serialization;
 using Xunit;
@@ -8,22 +7,6 @@ namespace Tests
 {
     public class DecimalNumberSerializationTest
     {
-        private class CurrentCultureScope : IDisposable
-        {
-            private readonly CultureInfo _originalCurrentCulture;
-
-            public CurrentCultureScope(CultureInfo cultureInfo)
-            {
-                _originalCurrentCulture = CultureInfo.CurrentCulture;
-                CultureInfo.CurrentCulture = cultureInfo;
-            }
-
-            public void Dispose()
-            {
-                CultureInfo.CurrentCulture = _originalCurrentCulture;
-            }
-        }
-
         [Fact]
         public void TestDecimalNumberSerializationForAllCultures()
         {
