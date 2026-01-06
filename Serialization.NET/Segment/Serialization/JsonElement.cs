@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
@@ -88,6 +89,11 @@ namespace Segment.Serialization
         {
             if (value is string s)
             {
+                if (Version.TryParse(s, out _) || s.Count(character => character == '.') > 1) // Consider strings with multiple dots as version numbers as System.Version.TryParse() does not handle int64 revision numbers like date times
+                {
+                    return new JsonLiteral(s, isString);
+                }
+
                 if (float.TryParse(s, out var f))
                 {
                     return new JsonLiteral(f, isString);
