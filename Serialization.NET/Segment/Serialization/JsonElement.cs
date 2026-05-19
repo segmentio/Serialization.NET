@@ -88,9 +88,9 @@ namespace Segment.Serialization
         {
             if (value is string s)
             {
-                if (float.TryParse(s, out var f))
+                if (long.TryParse(s, out var l))
                 {
-                    return new JsonLiteral(f, isString);
+                    return new JsonLiteral(l, isString);
                 }
 
                 if (double.TryParse(s, out var d))
