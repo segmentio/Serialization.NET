@@ -88,11 +88,6 @@ namespace Segment.Serialization
         {
             if (value is string s)
             {
-                if (float.TryParse(s, out var f))
-                {
-                    return new JsonLiteral(f, isString);
-                }
-
                 if (double.TryParse(s, out var d))
                 {
                     return new JsonLiteral(d, isString);
